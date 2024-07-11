@@ -100,6 +100,98 @@ Loop:
 
 https://github.com/Layan002/Electronics-task-3-Connecting-ESP32-with-any-sensor-on-WOKWI/assets/107956591/9ad63df6-5957-4eba-b0cc-9feaca67d0d9
 
+# Uploading ESP32 to Arduino IDE 1.8.19
+
+To upload code to an ESP32 using Arduino IDE 1.8.19, follow these steps:
+
+#### Install Arduino IDE:
+If you haven't installed Arduino IDE yet, download it from the [Arduino website](https://www.arduino.cc/en/software) and install it on your computer.
+
+#### Install ESP32 Board Manager:
+- Open Arduino IDE.
+- Go to File > Preferences.
+- In the "Additional Board Manager URLs" field, add the following URL
+```
+https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+```
+- Click "OK" to close the Preferences window.
+#### Install ESP32 Board Package:
+- Go to Tools > Board > Boards Manager.
+- In the Boards Manager window, search for "ESP32".
+- Select "ESP32 by Espressif Systems" and click "Install".
+#### Select ESP32 Board:
+- Go to Tools > Board.
+- Select your specific ESP32 board from the list (e.g., "ESP32 Dev Module").
+#### Select the Port:
+- Connect your ESP32 to your computer using a USB cable.
+- Go to Tools > Port and select the port to which your ESP32 is connected (e.g., COM3 on Windows, /dev/ttyUSB0 or /dev/ttyS0 on Linux).
+#### Configure the Upload Settings:
+Make sure the following settings are selected under the 'Tools' menu:
+- Flash Mode: QIO
+- Flash Frequency: 40MHz
+- Partition Scheme: Default
+- Core Debug Level: None
+- PSRAM: Disabled (unless your board supports and requires PSRAM)
+
+#### Write or Open a Sketch:
+``` CPP
+#include <Ultrasonic.h>
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
+// Define the pins for the ultrasonic sensor
+#define TRIG_PIN 5
+#define ECHO_PIN 18
+
+// Create an instance of the Ultrasonic library
+Ultrasonic ultrasonic(TRIG_PIN, ECHO_PIN);
+
+// Create an instance of the LiquidCrystal_I2C library with the LCD address
+LiquidCrystal_I2C lcd(0x27, 16, 2);  // Adjust the address if needed
+
+void setup() {
+  // Initialize serial communication
+  Serial.begin(115200);
+
+  // Initialize the I2C communication with custom SDA and SCL pins
+  Wire.begin(21, 22);  // SDA = GPIO 21, SCL = GPIO 22
+
+  // Initialize the LCD
+  lcd.begin(16, 2);  // Specify the number of columns and rows
+  lcd.backlight();  // Turn on the backlight
+}
+
+void loop() {
+  // Read the distance in centimeters
+  long distance = ultrasonic.read(CM);
+
+  // Print the distance to the Serial Monitor
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+
+  // Print the distance to the LCD
+  lcd.clear();
+  lcd.setCursor(0, 0);  // Set cursor to first column, first row
+  lcd.print("Distance:");
+  lcd.setCursor(0, 1);  // Set cursor to first column, second row
+  lcd.print(distance);
+  lcd.print(" cm");
+
+  // Wait for a bit before taking another reading
+  delay(500);
+}
+
+```
+#### Upload the Code:
+- Click the "Upload" button (the right-arrow icon) in the Arduino IDE toolbar.
+- The IDE will compile the sketch and upload it to your ESP32 board.
+- You should see the progress in the status window at the bottom of the IDE.
+
+#### Monitor the Serial Output (Optional):
+- Go to Tools > Serial Monitor to open the Serial Monitor.
+- Ensure the baud rate matches the one specified in your code (e.g., 115200).
+- If you encounter any issues during these steps, feel free to ask for further assistance!
 
 
 
