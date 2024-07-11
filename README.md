@@ -194,6 +194,8 @@ void loop() {
 - If you encounter any issues during these steps, feel free to ask for further assistance!
 
 # Troubleshooting
+
+inside Arduino libraries specificly for LiquidI2C
 ![image](https://github.com/user-attachments/assets/dcc8a2ad-bad0-4d8b-bf19-058a547dd63a)
 
 
