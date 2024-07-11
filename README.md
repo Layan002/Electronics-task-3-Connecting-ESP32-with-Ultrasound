@@ -193,5 +193,10 @@ void loop() {
 - Ensure the baud rate matches the one specified in your code (e.g., 115200).
 - If you encounter any issues during these steps, feel free to ask for further assistance!
 
+# Troubleshooting
+![image](https://github.com/user-attachments/assets/dcc8a2ad-bad0-4d8b-bf19-058a547dd63a)
+
+
+
 
 
