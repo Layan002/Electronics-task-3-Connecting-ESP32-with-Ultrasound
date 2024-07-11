@@ -17,7 +17,7 @@
 - RS (pin 4) to GPIO 16
 - RW (pin 5) to GND (grounded to set the LCD in write mode)
 - E (pin 6) to GPIO 17
-- D4 (pin 11) to GPIO 18
+- D4 (pin 11) to GPIO 23
 - D5 (pin 12) to GPIO 19
 - D6 (pin 13) to GPIO 21
 - D7 (pin 14) to GPIO 22
@@ -31,7 +31,7 @@ Ensure you have the LiquidCrystal library installed. You can install it via the 
 #include <LiquidCrystal.h>
 
 // Initialize the library with the numbers of the interface pins
-LiquidCrystal lcd(16, 17, 18, 19, 21, 22);
+LiquidCrystal lcd(16, 17, 23, 19, 21, 22);
 
 // Ultrasonic sensor pins
 const int trigPin = 5;
@@ -44,22 +44,38 @@ void setup() {
   // Print a message to the LCD.
   lcd.setCursor(0, 0); // Set cursor to column 0, row 0
   lcd.print("Distance: ");
+  
+  // Initialize serial communication for debugging
+  Serial.begin(115200);
+
+  // Set pin modes
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
 }
 
 void loop() {
   // Measure distance
   long duration, distance;
   
+  // Clear the trigPin by setting it LOW
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
+
+  // Set the trigPin HIGH for 10 microseconds
   digitalWrite(trigPin, HIGH);
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
   
+  // Read the echoPin, returns the sound wave travel time in microseconds
   duration = pulseIn(echoPin, HIGH);
-  
+
   // Calculate distance in centimeters (cm)
   distance = duration * 0.034 / 2;
+
+  // Print distance to serial monitor for debugging
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
   
   // Print distance on LCD
   lcd.setCursor(10, 0); // Set cursor to column 10, row 0
