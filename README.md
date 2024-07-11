@@ -93,7 +93,7 @@ Loop:
 
 
 # Circuit Diagram
-< img scr= "https://github.com/Layan002/Electronics-task-3-Connecting-ESP32-with-any-sensor-on-WOKWI/assets/107956591/88741d15-76af-45e7-9bf9-2c316d28b200" alt= "Circuit Diagram" width = 700>
+<img src= "https://github.com/Layan002/Electronics-task-3-Connecting-ESP32-with-any-sensor-on-WOKWI/assets/107956591/1096c1b7-470c-4ecc-8d64-43e8f85fae0f" width = 700>
 
 
 
