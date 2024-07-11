@@ -1,176 +1,99 @@
 # Components
-- ESP32 development board
+- AITRIP ESP32-WROOM-32 board
 - LCD 16x2 display
+- I2C module
 - Ultrasonic sensor (HC-SR04)
-- Breadboard and jumper wires
+- jumper wires
 
 # Wiring
 #### Ultrasonic Sensor (HC-SR04) to ESP32:
-- VCC to 5V
-- GND to GND
-- Trig to GPIO 5
-- Echo to GPIO 18
+- VCC to ESP32 5V (or 3.3V, if your sensor supports it)
+- GND to ESP32 GND
+- TRIG_PIN to ESP32 GPIO 5
+- ECHO_PIN to ESP32 GPIO 18
 
-#### LCD 16x2 Display to ESP32:
-- VSS (pin 1) to GND
-- VDD (pin 2) to 5V
-- RS (pin 4) to GPIO 16
-- RW (pin 5) to GND (grounded to set the LCD in write mode)
-- E (pin 6) to GPIO 17
-- D4 (pin 11) to GPIO 23
-- D5 (pin 12) to GPIO 19
-- D6 (pin 13) to GPIO 21
-- D7 (pin 14) to GPIO 22
-- A (pin 15) to 5V (to keep the backlight permanently on, assuming it has a built-in resistor)
+#### LCD (with I2C Module) to ESP32
+- LCD VCC to ESP32 3.3V (or 5V, depending on your LCD module)
+- LCD GND to ESP32 GND
+- LCD SDA to ESP32 GPIO 21
+- LCD SCL to ESP32 GPIO 22
 
 # Arduino Code:
 #### Install Libraries:
-Ensure you have the LiquidCrystal library installed. You can install it via the Arduino Library Manager if it's not already installed.
+> [1IMPORTANT]
+> Include the necessary libraries:
+- Wire for I2C communication.
+- LiquidCrystal_I2C for the LCD with I2C module.
+- Ultrasonic for the ultrasonic sensor.
+
 #### Arduino Sketch:
 ``` CPP
-#include <LiquidCrystal.h>
+#include <Ultrasonic.h>
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
 
-// Initialize the library with the numbers of the interface pins
-LiquidCrystal lcd(16, 17, 23, 19, 21, 22);
+// Define the pins for the ultrasonic sensor
+#define TRIG_PIN 5
+#define ECHO_PIN 18
 
-// Ultrasonic sensor pins
-const int trigPin = 5;
-const int echoPin = 18;
+// Create an instance of the Ultrasonic library
+Ultrasonic ultrasonic(TRIG_PIN, ECHO_PIN);
+
+// Create an instance of the LiquidCrystal_I2C library with the LCD address
+LiquidCrystal_I2C lcd(0x27, 16, 2);  // Adjust the address if needed
 
 void setup() {
-  // Set up the LCD's number of columns and rows
-  lcd.begin(16, 2);
-
-  // Print a message to the LCD.
-  lcd.setCursor(0, 0); // Set cursor to column 0, row 0
-  lcd.print("Distance: ");
-  
-  // Initialize serial communication for debugging
+  // Initialize serial communication
   Serial.begin(115200);
 
-  // Set pin modes
-  pinMode(trigPin, OUTPUT);
-  pinMode(echoPin, INPUT);
+  // Initialize the I2C communication with custom SDA and SCL pins
+  Wire.begin(21, 22);  // SDA = GPIO 21, SCL = GPIO 22
+
+  // Initialize the LCD
+  lcd.begin(16, 2);  // Specify the number of columns and rows
+  lcd.backlight();  // Turn on the backlight
 }
 
 void loop() {
-  // Measure distance
-  long duration, distance;
-  
-  // Clear the trigPin by setting it LOW
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(2);
+  // Read the distance in centimeters
+  long distance = ultrasonic.read(CM);
 
-  // Set the trigPin HIGH for 10 microseconds
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
-  
-  // Read the echoPin, returns the sound wave travel time in microseconds
-  duration = pulseIn(echoPin, HIGH);
-
-  // Calculate distance in centimeters (cm)
-  distance = duration * 0.034 / 2;
-
-  // Print distance to serial monitor for debugging
+  // Print the distance to the Serial Monitor
   Serial.print("Distance: ");
   Serial.print(distance);
   Serial.println(" cm");
-  
-  // Print distance on LCD
-  lcd.setCursor(10, 0); // Set cursor to column 10, row 0
-  lcd.print("     "); // Clear previous distance value
-  lcd.setCursor(10, 0); // Set cursor again to column 10, row 0
+
+  // Print the distance to the LCD
+  lcd.clear();
+  lcd.setCursor(0, 0);  // Set cursor to first column, first row
+  lcd.print("Distance:");
+  lcd.setCursor(0, 1);  // Set cursor to first column, second row
   lcd.print(distance);
   lcd.print(" cm");
-  
-  delay(500); // Delay for stability
+
+  // Wait for a bit before taking another reading
+  delay(500);
 }
 
 ```
 ## Explanation:
-- Wiring: The ultrasonic sensor (HC-SR04) is connected to measure distance, and the LCD 16x2 display is used to output the distance measurement.
-- Code: The Arduino sketch initializes the LCD and continuously measures and displays the distance from the ultrasonic sensor.
-## Testing 
-- Upload the sketch to your ESP32.
-- Ensure the ultrasonic sensor is placed in a suitable location to measure distances.
-- Verify that the LCD displays accurate distance measurements in centimeters.
+### Libraries: 
+- The 'Wire' library is used for I2C communication on the ESP32. LiquidCrystal_I2C is used for the LCD, and Ultrasonic is for the ultrasonic sensor.
+### Initialization:
+- 'Wire.begin(21, 22)' initializes the I2C communication with SDA on GPIO 21 and SCL on GPIO 22 for the ESP32.
+- 'lcd.begin()' initializes the LCD, including parameters 16 and 2 to specify the LCD's number of columns and rows. And 'lcd.backlight()' turns on the LCD backlight.
+Loop:
+- The distance is read using the ultrasonic sensor.
+- The distance is printed to both the Serial Monitor and the LCD display.
+- 'lcd.clear()' clears the previous content on the LCD.
+- 'lcd.setCursor(0, 0)' and 'lcd.setCursor(0, 1)' position the cursor on the LCD to display the distance.
+
 > [!NOTE]
-> This setup combines the functionality of displaying ultrasonic sensor readings on an LCD 16x2 display using an ESP32, providing a practical integration for distance measurement projects.
+> With this setup, you should see the distance measured by the ultrasonic sensor displayed on the LCD screen when using the ESP32. Adjust the I2C address (0x27) if your LCD has a different address.
 
 
-# Adding AA bettaries
-Yes, you can use AA batteries to power your ultrasonic sensor, LCD, and backlight, but there are a few important considerations to ensure everything works correctly and safely.
-
-Powering Components with AA Batteries
-Voltage Considerations:
-
-Ultrasonic Sensor (HC-SR04): Typically operates at 5V. You will need to ensure that the AA battery setup provides an appropriate voltage.
-LCD Display: Commonly operates at 5V, but if your LCD can operate at 3.3V, it's better to match it with the ESP32's logic level.
-ESP32: Typically operates at 3.3V, and its pins are not 5V tolerant.
-Using AA Batteries:
-
-AA batteries typically provide 1.5V each. Using 4 AA batteries in series will give you 6V, which can be regulated to 5V using a voltage regulator.
-Connecting AA Batteries:
-Voltage Regulator:
-
-Use a 5V voltage regulator (like a 7805) to step down 6V from 4 AA batteries to 5V for your components.
-Battery Configuration:
-
-Connect 4 AA batteries in series to get 6V.
-Use the 6V output from the batteries and pass it through a 5V voltage regulator to get a stable 5V output.
-Wiring Diagram:
-Connect 4 AA Batteries in Series:
-
-Positive Terminal of Battery Pack (6V) -> Input of 5V Voltage Regulator
-Ground Terminal of Battery Pack -> Ground of 5V Voltage Regulator
-Output of 5V Voltage Regulator:
-
-Output (5V) -> VCC of Ultrasonic Sensor, VDD of LCD, and A (backlight) of LCD
-Ground -> Ground of Ultrasonic Sensor, LCD
-
-[Battery Pack (6V)]
-     +----+----+----+----+
-     | AA | AA | AA | AA |
-     +----+----+----+----+
-       |               |
-       +-----> 6V      |
-              (Output to 5V Regulator)
-
-              
-[5V Voltage Regulator (7805)]
-     +-------------------------+
-     |    IN   GND   OUT       |
-     +----+    |    +----+     |
-          |    |         |     |
-          6V  GND       5V    GND
-          |    |         |     |
-          |    +---------+     |
-          |                    |
+# Circuit Diagram
+< img src= "https://github.com/Layan002/Electronics-task-3-Connecting-ESP32-with-any-sensor-on-WOKWI/assets/107956591/88741d15-76af-45e7-9bf9-2c316d28b200" alt= "Circuit Diagram" width = 700>
 
 
-Connecting Components:
-5V Regulator Output (5V):
-
-VCC of Ultrasonic Sensor
-VDD of LCD
-A (backlight) of LCD
-Ground (GND):
-
-Ground of Ultrasonic Sensor
-Ground of LCD
-Code Considerations:
-Ensure that you have consistent and correct power to avoid any issues with the operation of your components. The code does not need to change, as the power supply is independent of the pin connections.
-
-If you want to implement this setup, you can get a 5V voltage regulator module,
-
-and it should look something like this:
-
-AA Batteries (4x1.5V) -> 5V Regulator -> VCC and Ground for Sensors and LCD
-
-Note:
-Battery Life: AA batteries will deplete over time, so consider the current consumption of your components to estimate battery life.
-Voltage Drop: Be aware of voltage drops over time as the batteries discharge, which might affect the performance of your components.
-Safety: Ensure all connections are secure and check the regulator's specifications to avoid overheating.
-If you follow these steps, you should be able to power your ultrasonic sensor, LCD, and backlight with AA batteries.
 
