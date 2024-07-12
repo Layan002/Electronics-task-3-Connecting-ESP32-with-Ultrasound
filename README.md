@@ -198,6 +198,9 @@ void loop() {
 inside Arduino libraries specificly for LiquidI2C, add esp32 as I did
 ![image](https://github.com/user-attachments/assets/dcc8a2ad-bad0-4d8b-bf19-058a547dd63a)
 
+> [!CAUTION]
+> DO NOT forget to rotate the potentiometer of the I2C.
+
 # Testing LCD with Arduino
 
 ``` CPP
