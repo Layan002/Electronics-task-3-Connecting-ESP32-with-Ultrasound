@@ -1,11 +1,14 @@
-# Components
+# Simulation on WOKWi
+Before getting started with ESP32 in real life. we should try to simulate everything on any online simulator. I chose WOKWI because it contains ESP32 unlike TinkerCAD which lacks of this component
+
+## Components
 - AITRIP ESP32-WROOM-32 board
 - LCD 16x2 display
 - I2C module
 - Ultrasonic sensor (HC-SR04)
 - jumper wires
 
-# Wiring
+## Wiring
 #### Ultrasonic Sensor (HC-SR04) to ESP32:
 - VCC to ESP32 5V (or 3.3V, if your sensor supports it)
 - GND to ESP32 GND
@@ -18,9 +21,71 @@
 - LCD SDA to ESP32 GPIO 21
 - LCD SCL to ESP32 GPIO 22
 
-# Arduino Code:
+## Circuit Diagram
+As mentioned before: 
+- For ultrasound: Trig takes pin 5, Echo takes pin 23, and VCC takes 5V. <br>
+- For LCD with I2C: SDA takes pin 21, SCL takes pin 22, and VCC takes 3.3V. <br>
+<img src= "https://github.com/Layan002/Electronics-task-3-Connecting-ESP32-with-any-sensor-on-WOKWI/assets/107956591/d76026bf-d029-4938-801c-ded82bbf0e60" width = 700>
+
+## Code 
+> [!IMPORTANT]
+> You need to install the libraries of: 'Ultrasonic' and 'LiquidCrystal_I2C' on WOKWI first to make the code runs without errors. 
+``` CPP
+#include <Ultrasonic.h>
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
+// Define the pins for th4e ultrasonic sensor
+#define TRIG_PIN 5
+#define ECHO_PIN 23
+
+// Create an instance of the Ultrasonic library
+Ultrasonic ultrasonic(TRIG_PIN, ECHO_PIN);
+
+// Create an instance of the LiquidCrystal_I2C library with the LCD address
+LiquidCrystal_I2C lcd(0x27, 16, 2);  // Adjust the address if needed
+
+void setup() {
+  // Initialize serial communication
+  Serial.begin(115200);
+
+  // Initialize the I2C communication with custom SDA and SCL pins
+  Wire.begin(21, 22);  // SDA = GPIO 21, SCL = GPIO 22
+
+  // Initialize the LCD
+  lcd.begin(16, 2);  // Specify the number of columns and rows
+  lcd.backlight();  // Turn on the backlight
+}
+
+void loop() {
+  // Read the distance in centimeters
+  long distance = ultrasonic.read(CM);
+
+  // Print the distance to the Serial Monitor
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+
+  // Print the distance to the LCD
+  lcd.clear();
+  lcd.setCursor(0, 0);  // Set cursor to first column, first row
+  lcd.print("Distance:");
+  lcd.setCursor(0, 1);  // Set cursor to first column, second row
+  lcd.print(distance);
+  lcd.print(" cm");
+
+  // Wait for a bit before taking another reading
+  delay(500);
+}
+```
+## Testing ESP32 on WOKWI
+https://github.com/Layan002/Electronics-task-3-Connecting-ESP32-with-any-sensor-on-WOKWI/assets/107956591/9ad63df6-5957-4eba-b0cc-9feaca67d0d9
+
+# Arduino IDE:
+
+## Arduino Code:
 #### Install Libraries:
-> [1IMPORTANT]
+> [!IMPORTANT]
 > Include the necessary libraries:
 - Wire for I2C communication.
 - LiquidCrystal_I2C for the LCD with I2C module.
@@ -92,13 +157,7 @@ Loop:
 > With this setup, you should see the distance measured by the ultrasonic sensor displayed on the LCD screen when using the ESP32. Adjust the I2C address (0x27) if your LCD has a different address.
 
 
-# Circuit Diagram
 
-<img src= "https://github.com/Layan002/Electronics-task-3-Connecting-ESP32-with-any-sensor-on-WOKWI/assets/107956591/d76026bf-d029-4938-801c-ded82bbf0e60" width = 700>
-
-# Testing ESP32 on WOKWI
-
-https://github.com/Layan002/Electronics-task-3-Connecting-ESP32-with-any-sensor-on-WOKWI/assets/107956591/9ad63df6-5957-4eba-b0cc-9feaca67d0d9
 
 # Uploading ESP32 to Arduino IDE 1.8.19
 
