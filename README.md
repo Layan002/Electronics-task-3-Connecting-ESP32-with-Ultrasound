@@ -8,6 +8,9 @@ Before getting started with ESP32 in real life. we should try to simulate everyt
 - Ultrasonic sensor (HC-SR04)
 - jumper wires
 
+## Circuit function
+Using an ultrasonic sensor with an ESP32 involves measuring the distance to an object by sending out a sound wave and timing how long it takes for the echo to return.
+
 ## Wiring
 ### Ultrasonic Sensor (HC-SR04) to ESP32:
 - VCC to ESP32 5V (or 3.3V, if your sensor supports it)
@@ -26,9 +29,6 @@ As mentioned before:
 - For ultrasound: Trig takes pin 5, Echo takes pin 23, and VCC takes 5V. <br>
 - For LCD with I2C: SDA takes pin 21, SCL takes pin 22, and VCC takes 3.3V. <br>
 <img src= "https://github.com/Layan002/Electronics-task-3-Connecting-ESP32-with-any-sensor-on-WOKWI/assets/107956591/d76026bf-d029-4938-801c-ded82bbf0e60" width = 700>
-
-## Circuit function
-Using an ultrasonic sensor with an ESP32 involves measuring the distance to an object by sending out a sound wave and timing how long it takes for the echo to return.
 
 ## Code 
 > [!IMPORTANT]
