@@ -198,6 +198,44 @@ void loop() {
 inside Arduino libraries specificly for LiquidI2C, add esp32 as I did
 ![image](https://github.com/user-attachments/assets/dcc8a2ad-bad0-4d8b-bf19-058a547dd63a)
 
+# Testing LCD with Arduino
+
+``` CPP
+#include <Wire.h>  // Include Wire library for I2C
+#include <LiquidCrystal_I2C.h>  // Include LiquidCrystal_I2C library
+
+// Set the LCD address to 0x27 or 0x3F (depends on your module)
+#define LCD_ADDRESS 0x27
+#define LCD_COLUMNS 16
+#define LCD_ROWS 2
+
+// Initialize the LiquidCrystal_I2C library with the I2C address, columns, and rows
+LiquidCrystal_I2C lcd(LCD_ADDRESS, LCD_COLUMNS, LCD_ROWS);
+
+void setup() {
+  // Initialize the LCD
+  lcd.init();
+  
+  // Turn on the backlight (if supported)
+  lcd.backlight();
+  
+  // Print a message to the LCD.
+  lcd.print("hello, world!");
+}
+
+void loop() {
+  // Turn off the display:
+  lcd.noDisplay();
+  delay(500);
+  
+  // Turn on the display:
+  lcd.display();
+  delay(500);
+}
+```
+> [!NOTE]
+> I've used Marco Library by installing it from Library manager
+
 
 
 
