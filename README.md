@@ -164,7 +164,7 @@ You DONT have to install wire library as it is built in.
 >
 > go to the **Arduino file** on your laptob -> libraies ->  LiquidCrystal_I2C -> library.properties. <br>
 > 
-> inside library.properties add esp32 to 'architectures'.<br>
+> inside **library.properties** add **esp32** to **'architectures'**.<br>
 
 inside Arduino libraries specificly for LiquidI2C, add esp32 as I did: <br>
 <img src= "https://github.com/user-attachments/assets/dcc8a2ad-bad0-4d8b-bf19-058a547dd63a" alt= "image" width= 700>
