@@ -9,13 +9,13 @@ Before getting started with ESP32 in real life. we should try to simulate everyt
 - jumper wires
 
 ## Wiring
-#### Ultrasonic Sensor (HC-SR04) to ESP32:
+### Ultrasonic Sensor (HC-SR04) to ESP32:
 - VCC to ESP32 5V (or 3.3V, if your sensor supports it)
 - GND to ESP32 GND
 - TRIG_PIN to ESP32 GPIO 5
 - ECHO_PIN to ESP32 GPIO 18
 
-#### LCD (with I2C Module) to ESP32
+### LCD (with I2C Module) to ESP32
 - LCD VCC to ESP32 3.3V (or 5V, depending on your LCD module)
 - LCD GND to ESP32 GND
 - LCD SDA to ESP32 GPIO 21
@@ -103,10 +103,10 @@ After successfully running the code on the emulator, we can now use the real pie
 
 ## Uploading ESP32 to Arduino IDE 1.8.19
 
-#### Install Arduino IDE:
+### Install Arduino IDE:
 If you haven't installed Arduino IDE yet, download it from the [Arduino website](https://www.arduino.cc/en/software) and install it on your computer.
 
-#### Install ESP32 Board Manager:
+### Install ESP32 Board Manager:
 - Open Arduino IDE.
 - Go to File > Preferences.
 - In the "Additional Board Manager URLs" field, add the following URL
@@ -115,20 +115,20 @@ https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32
 ```
 - Click "OK" to close the Preferences window.
   
-#### Install ESP32 Board Package:
+### Install ESP32 Board Package:
 - Go to Tools > Board > Boards Manager.
 - In the Boards Manager window, search for "ESP32".
 - Select "ESP32 by Espressif Systems" and click "Install".
   
-#### Select ESP32 Board:
+### Select ESP32 Board:
 - Go to Tools > Board.
 - Select your specific ESP32 board from the list (e.g., "ESP32 Dev Module"). I have ESP32-WROOM-32 board so I will choose **"ESP32 WROOM-DA Module"**
   
-#### Select the Port:
+### Select the Port:
 - Connect your ESP32 to your computer using a USB cable.
 - Go to Tools > Port and select the port to which your ESP32 is connected (e.g., COM3 on Windows, /dev/ttyUSB0 or /dev/ttyS0 on Linux).
   
-#### Configure the Upload Settings:
+### Configure the Upload Settings:
 Make sure the following settings are selected under the 'Tools' menu:
 - Flash Mode: QIO
 - Flash Frequency: 40MHz
@@ -136,7 +136,7 @@ Make sure the following settings are selected under the 'Tools' menu:
 - Core Debug Level: None
 - PSRAM: Disabled (unless your board supports and requires PSRAM)
 
-#### Testing the ESP32 
+### Testing the ESP32 
 We must first make sure that the ESP32 is valid to use and does NOT have any malfunctions. To do that, we do the following:
 - Connect the ESP32 to your laptob by blogging the USB into the port.
 - File -> Examples -> Basics -> Blink
@@ -147,7 +147,7 @@ We must first make sure that the ESP32 is valid to use and does NOT have any mal
 https://github.com/user-attachments/assets/c6772f7e-678e-4ab7-a4dc-4df92b7d372d
 
 
-#### Install Libraries:
+### Install Libraries:
 > [!IMPORTANT]
 > Include the necessary libraries:
 To do that, go to Scetch -> Include library -> menage libraries -> search for the library -> install
@@ -176,10 +176,10 @@ inside Arduino libraries specificly for LiquidI2C, add esp32 as I did: <br>
 <img src= "https://github.com/user-attachments/assets/ac39e6f0-1abf-4f32-91d9-2f55b0a7b924" alt= "image" width= 400>
 
 
-#### Arduino Sketch:
+### Arduino Sketch:
 Arduino sketch is the same as WOKWI sketck: <br>
 
-#### Write or Open a Sketch:
+### Write or Open a Sketch:
 ``` CPP
 #include <Ultrasonic.h>
 #include <Wire.h>
@@ -229,12 +229,12 @@ void loop() {
 }
 
 ```
-#### Upload the Code:
+### Upload the Code:
 - Click the "Upload" button (the right-arrow icon) in the Arduino IDE toolbar.
 - The IDE will compile the sketch and upload it to your ESP32 board.
 - You should see the progress in the status window at the bottom of the IDE.
 
-#### Monitor the Serial Output (Optional):
+### Monitor the Serial Output (Optional):
 - Go to Tools > Serial Monitor to open the Serial Monitor.
 - Ensure the baud rate matches the one specified in your code (e.g., 115200).
 
