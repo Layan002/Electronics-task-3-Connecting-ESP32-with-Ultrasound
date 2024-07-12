@@ -78,10 +78,10 @@ void loop() {
   delay(500);
 }
 ```
-## Explanation:
-### Libraries: 
+### Explanation:
+#### Libraries: 
 - The 'Wire' library is used for I2C communication on the ESP32. LiquidCrystal_I2C is used for the LCD, and Ultrasonic is for the ultrasonic sensor.
-### Initialization:
+#### Initialization:
 - 'Wire.begin(21, 22)' initializes the I2C communication with SDA on GPIO 21 and SCL on GPIO 22 for the ESP32.
 - 'lcd.begin()' initializes the LCD, including parameters 16 and 2 to specify the LCD's number of columns and rows. And 'lcd.backlight()' turns on the LCD backlight.
 Loop:
