@@ -78,12 +78,31 @@ void loop() {
   delay(500);
 }
 ```
+## Explanation:
+### Libraries: 
+- The 'Wire' library is used for I2C communication on the ESP32. LiquidCrystal_I2C is used for the LCD, and Ultrasonic is for the ultrasonic sensor.
+### Initialization:
+- 'Wire.begin(21, 22)' initializes the I2C communication with SDA on GPIO 21 and SCL on GPIO 22 for the ESP32.
+- 'lcd.begin()' initializes the LCD, including parameters 16 and 2 to specify the LCD's number of columns and rows. And 'lcd.backlight()' turns on the LCD backlight.
+Loop:
+- The distance is read using the ultrasonic sensor.
+- The distance is printed to both the Serial Monitor and the LCD display.
+- 'lcd.clear()' clears the previous content on the LCD.
+- 'lcd.setCursor(0, 0)' and 'lcd.setCursor(0, 1)' position the cursor on the LCD to display the distance.
+
+> [!NOTE]
+> With this setup, you should see the distance measured by the ultrasonic sensor displayed on the LCD screen when using the ESP32. Adjust the I2C address (0x27) if your LCD has a different address.
+
 ## Testing ESP32 on WOKWI
 https://github.com/Layan002/Electronics-task-3-Connecting-ESP32-with-any-sensor-on-WOKWI/assets/107956591/9ad63df6-5957-4eba-b0cc-9feaca67d0d9
 
-# Arduino IDE:
+
+
+# Real life implementation using Arduino IDE:
 After successfully running the code on the emulator, we can now use the real piece for ESP32. But first of all we have important steps to:
+
 ## Uploading ESP32 to Arduino IDE 1.8.19
+
 #### Install Arduino IDE:
 If you haven't installed Arduino IDE yet, download it from the [Arduino website](https://www.arduino.cc/en/software) and install it on your computer.
 
@@ -128,8 +147,6 @@ We must first make sure that the ESP32 is valid to use and does NOT have any mal
 https://github.com/user-attachments/assets/c6772f7e-678e-4ab7-a4dc-4df92b7d372d
 
 
-
-## Arduino imptementation:
 #### Install Libraries:
 > [!IMPORTANT]
 > Include the necessary libraries:
@@ -139,88 +156,28 @@ To do that, go to Scetch -> Include library -> menage libraries -> search for th
 You DONT have to install wire library as it is built in.
 
 > [!NOTE]
-> If you cant find the LiquidCrystal_I2C library by Frank de Brabander download the ZIP file from the [GitHub repository](https://github.com/fdebrabander/Arduino-LiquidCrystal-I2C-library) and install it manually by going to Sketch -> Include Library -> Add .ZIP Library... and selecting the downloaded ZIP file.
+> If you cant find the LiquidCrystal_I2C library by Frank de Brabander, download the ZIP file from the [GitHub repository](https://github.com/fdebrabander/Arduino-LiquidCrystal-I2C-library) and install it manually by going to: <br>
+> Sketch -> Include Library -> Add .ZIP Library... and selecting the downloaded ZIP file.
 
 > [!CAUTION]
-> LiquidCrystal_I2C library has something important to change to make the ESP32 communicates and works with the LCD
-go to the Arduino file on your laptob -> libraies ->  LiquidCrystal_I2C -> library.properties
-> C:\Users\welcome\Documents\Arduino\libraries\LiquidCrystal_I2C. usually it is like this path
-> inside library.properties add esp32 to 'architectures'
+> LiquidCrystal_I2C library has something important to change to make the ESP32 communicates and works with the LCD: <br>
+>
+> go to the Arduino file on your laptob -> libraies ->  LiquidCrystal_I2C -> library.properties. <br>
+>
+> C:\Users\welcome\Documents\Arduino\libraries\LiquidCrystal_I2C. usually it is like this path. <br>
+> 
+> inside library.properties add esp32 to 'architectures'.<br>
 
-inside Arduino libraries specificly for LiquidI2C, add esp32 as I did
-![image](https://github.com/user-attachments/assets/dcc8a2ad-bad0-4d8b-bf19-058a547dd63a)
+inside Arduino libraries specificly for LiquidI2C, add esp32 as I did: <br>
+<img src= "https://github.com/user-attachments/assets/dcc8a2ad-bad0-4d8b-bf19-058a547dd63a" alt= "image" width= 700>
 
 > [!CAUTION]
-> DO NOT forget to rotate the potentiometer of the I2C.
+> DO NOT forget to rotate the potentiometer of the I2C, if you didn't, it may not work! <br>
+<img src= "https://github.com/user-attachments/assets/ac39e6f0-1abf-4f32-91d9-2f55b0a7b924" alt= "image" width= 400>
+
 
 #### Arduino Sketch:
-``` CPP
-#include <Ultrasonic.h>
-#include <Wire.h>
-#include <LiquidCrystal_I2C.h>
-
-// Define the pins for the ultrasonic sensor
-#define TRIG_PIN 5
-#define ECHO_PIN 18
-
-// Create an instance of the Ultrasonic library
-Ultrasonic ultrasonic(TRIG_PIN, ECHO_PIN);
-
-// Create an instance of the LiquidCrystal_I2C library with the LCD address
-LiquidCrystal_I2C lcd(0x27, 16, 2);  // Adjust the address if needed
-
-void setup() {
-  // Initialize serial communication
-  Serial.begin(115200);
-
-  // Initialize the I2C communication with custom SDA and SCL pins
-  Wire.begin(21, 22);  // SDA = GPIO 21, SCL = GPIO 22
-
-  // Initialize the LCD
-  lcd.begin(16, 2);  // Specify the number of columns and rows
-  lcd.backlight();  // Turn on the backlight
-}
-
-void loop() {
-  // Read the distance in centimeters
-  long distance = ultrasonic.read(CM);
-
-  // Print the distance to the Serial Monitor
-  Serial.print("Distance: ");
-  Serial.print(distance);
-  Serial.println(" cm");
-
-  // Print the distance to the LCD
-  lcd.clear();
-  lcd.setCursor(0, 0);  // Set cursor to first column, first row
-  lcd.print("Distance:");
-  lcd.setCursor(0, 1);  // Set cursor to first column, second row
-  lcd.print(distance);
-  lcd.print(" cm");
-
-  // Wait for a bit before taking another reading
-  delay(500);
-}
-
-```
-## Explanation:
-### Libraries: 
-- The 'Wire' library is used for I2C communication on the ESP32. LiquidCrystal_I2C is used for the LCD, and Ultrasonic is for the ultrasonic sensor.
-### Initialization:
-- 'Wire.begin(21, 22)' initializes the I2C communication with SDA on GPIO 21 and SCL on GPIO 22 for the ESP32.
-- 'lcd.begin()' initializes the LCD, including parameters 16 and 2 to specify the LCD's number of columns and rows. And 'lcd.backlight()' turns on the LCD backlight.
-Loop:
-- The distance is read using the ultrasonic sensor.
-- The distance is printed to both the Serial Monitor and the LCD display.
-- 'lcd.clear()' clears the previous content on the LCD.
-- 'lcd.setCursor(0, 0)' and 'lcd.setCursor(0, 1)' position the cursor on the LCD to display the distance.
-
-> [!NOTE]
-> With this setup, you should see the distance measured by the ultrasonic sensor displayed on the LCD screen when using the ESP32. Adjust the I2C address (0x27) if your LCD has a different address.
-
-
-
-
+Arduino sketch is the same as WOKWI sketck: <br>
 
 #### Write or Open a Sketch:
 ``` CPP
@@ -230,7 +187,7 @@ Loop:
 
 // Define the pins for the ultrasonic sensor
 #define TRIG_PIN 5
-#define ECHO_PIN 18
+#define ECHO_PIN 23
 
 // Create an instance of the Ultrasonic library
 Ultrasonic ultrasonic(TRIG_PIN, ECHO_PIN);
@@ -280,19 +237,16 @@ void loop() {
 #### Monitor the Serial Output (Optional):
 - Go to Tools > Serial Monitor to open the Serial Monitor.
 - Ensure the baud rate matches the one specified in your code (e.g., 115200).
-- If you encounter any issues during these steps, feel free to ask for further assistance!
 
-# Troubleshooting
-
-
-# Testing LCD with Arduino
-
+## Testing both LCD and ultrasound individually:
+Usually we need to break down the code to test everything usually because the main code doesnt work and we need to check which makes the problem. So I did the following codes:
+- Testing LCD:
 ``` CPP
-#include <Wire.h>  // Include Wire library for I2C
-#include <LiquidCrystal_I2C.h>  // Include LiquidCrystal_I2C library
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
 
-// Set the LCD address to 0x27 or 0x3F (depends on your module)
-#define LCD_ADDRESS 0x27
+// Set the LCD address found by the I2C scanner
+#define LCD_ADDRESS 0x27 // Replace with your LCD's I2C address
 #define LCD_COLUMNS 16
 #define LCD_ROWS 2
 
@@ -300,29 +254,58 @@ void loop() {
 LiquidCrystal_I2C lcd(LCD_ADDRESS, LCD_COLUMNS, LCD_ROWS);
 
 void setup() {
+  // Initialize the Wire library with the specified SDA and SCL pins for the ESP32
+  Wire.begin(21, 22);
+  
   // Initialize the LCD
   lcd.init();
   
   // Turn on the backlight (if supported)
   lcd.backlight();
   
-  // Print a message to the LCD.
+  // Print a message to the LCD
   lcd.print("hello, world!");
 }
 
 void loop() {
-  // Turn off the display:
+  // Turn off the display
   lcd.noDisplay();
   delay(500);
   
-  // Turn on the display:
+  // Turn on the display
   lcd.display();
   delay(500);
 }
 ```
-> [!NOTE]
-> I've used Marco Library by installing it from Library manager
+- Testing Ultrasound:
+``` CPP
+#include <Ultrasonic.h>
 
+// Define the pins for the ultrasonic sensor
+#define TRIG_PIN 5
+#define ECHO_PIN 23
+
+// Create an instance of the Ultrasonic library
+Ultrasonic ultrasonic(TRIG_PIN, ECHO_PIN);
+
+void setup() {
+  // Initialize serial communication
+  Serial.begin(115200);
+}
+
+void loop() {
+  // Read the distance in centimeters
+  long distance = ultrasonic.read(CM);
+
+  // Print the distance to the Serial Monitor
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+
+  // Wait for a bit before taking another reading
+  delay(500);
+}
+```
 
 
 
