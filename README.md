@@ -162,9 +162,7 @@ You DONT have to install wire library as it is built in.
 > [!CAUTION]
 > LiquidCrystal_I2C library has something important to change to make the ESP32 communicates and works with the LCD: <br>
 >
-> go to the Arduino file on your laptob -> libraies ->  LiquidCrystal_I2C -> library.properties. <br>
->
-> C:\Users\welcome\Documents\Arduino\libraries\LiquidCrystal_I2C. usually it is like this path. <br>
+> go to the **Arduino file** on your laptob -> libraies ->  LiquidCrystal_I2C -> library.properties. <br>
 > 
 > inside library.properties add esp32 to 'architectures'.<br>
 
