@@ -236,6 +236,14 @@ void loop() {
 - Go to Tools > Serial Monitor to open the Serial Monitor.
 - Ensure the baud rate matches the one specified in your code (e.g., 115200).
 
+
+
+https://github.com/user-attachments/assets/5b7f34d7-43b0-4413-9751-c69db1121df8
+
+> [!IMPORTANT]
+> If things does NOT work with you as what I did, follow the next steps.
+
+
 ## Testing both LCD and ultrasound individually:
 Usually we need to break down the code to test everything usually because sometimes the main code doesn't work and we need to check which makes the problem. So, I sketched the following codes: <br>
 - Testing LCD: <br>
