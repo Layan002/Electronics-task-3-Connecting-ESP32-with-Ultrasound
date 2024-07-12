@@ -27,6 +27,9 @@ As mentioned before:
 - For LCD with I2C: SDA takes pin 21, SCL takes pin 22, and VCC takes 3.3V. <br>
 <img src= "https://github.com/Layan002/Electronics-task-3-Connecting-ESP32-with-any-sensor-on-WOKWI/assets/107956591/d76026bf-d029-4938-801c-ded82bbf0e60" width = 700>
 
+## Circuit function
+Using an ultrasonic sensor with an ESP32 involves measuring the distance to an object by sending out a sound wave and timing how long it takes for the echo to return.
+
 ## Code 
 > [!IMPORTANT]
 > You need to install the libraries of: 'Ultrasonic' and 'LiquidCrystal_I2C' on WOKWI first to make the code runs without errors. 
