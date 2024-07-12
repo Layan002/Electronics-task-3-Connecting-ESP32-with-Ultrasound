@@ -239,8 +239,8 @@ void loop() {
 - Ensure the baud rate matches the one specified in your code (e.g., 115200).
 
 ## Testing both LCD and ultrasound individually:
-Usually we need to break down the code to test everything usually because the main code doesnt work and we need to check which makes the problem. So I did the following codes:
-- Testing LCD:
+Usually we need to break down the code to test everything usually because sometimes the main code doesn't work and we need to check which makes the problem. So, I sketched the following codes: <br>
+- Testing LCD: <br>
 ``` CPP
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
@@ -277,7 +277,7 @@ void loop() {
   delay(500);
 }
 ```
-- Testing Ultrasound:
+- Testing Ultrasound: <br>
 ``` CPP
 #include <Ultrasonic.h>
 
