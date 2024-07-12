@@ -313,6 +313,7 @@ void loop() {
 }
 ```
 # VLOG of my Work 😉
+You can find all my process and what I did during two days to complete this task in files' repo with the folder named: [WATCH_THIS]() 
 
 
 
