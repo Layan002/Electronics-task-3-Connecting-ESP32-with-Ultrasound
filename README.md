@@ -16,7 +16,7 @@ Using an ultrasonic sensor with an ESP32 involves measuring the distance to an o
 - VCC to ESP32 5V (or 3.3V, if your sensor supports it)
 - GND to ESP32 GND
 - TRIG_PIN to ESP32 GPIO 5
-- ECHO_PIN to ESP32 GPIO 18
+- ECHO_PIN to ESP32 GPIO 23
 
 ### LCD (with I2C Module) to ESP32
 - LCD VCC to ESP32 3.3V (or 5V, depending on your LCD module)
